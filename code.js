@@ -225,7 +225,7 @@ function findRow(uniqueId) {
 
 
 function ReadSearch() {
-  var htmlOutput = HtmlService.createHtmlOutputFromFile('EntryForm')
+  var htmlOutput = HtmlService.createHtmlOutputFromFile('Page')
       .setWidth(400)
       .setHeight(300);
   SpreadsheetApp.getUi().showModalDialog(htmlOutput, 'Select Filters For Search');
