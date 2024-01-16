@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <base target="_top">
+
+  <style>
+    /* Add your custom CSS styles here */
+    body {
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    .subbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .loading-spinner {
+      display: flex;
+</style>
+  </head>
+  <body>
+    
+    
+    <script>
+
+
+<script>
+
+  var entrySubmitted = false;  // Flag to track whether an entry has been submitted
+
+  // Function to submit the form
+  function submitForm() {
+    try {
+      if (entrySubmitted) {
+        // Entry already submitted, do not proceed
+        return;
+      }
+
+      var headers = document.getElementsByName("headers")[0].value.split(',');
+      var data = [];
+
+      for (var i = 0; i < headers.length; i++) {
+        if (headers[i] === 'Date of Birth') {
+          data.push(document.getElementById("header" + i).value);
+        }else if (headers[i] === 'Favorite Subject') {
+          data.push(document.getElementById("header" + i).value);
+        } else {
+          data.push(document.getElementById("header" + i).value);
+        }
+      }
+
+      google.script.run.withSuccessHandler(
+  function () {
+    google.script.host.close();
+  }).appendRow(data);
+
+    } catch (error) {
+      Logger.log("Error submitting form:  " + error.message);
+      alert("Error submitting form:  " + error.message);
+    }
+  }
+      // Function to submit the edited form
+      function editedForm(rowIndex) {
+        
+        try {
+          var headers = document.getElementsByName("headers")[0].value.split(',');
+          var datas = [];
+
+          // Collect input values for each header
+          for (var i = 0; i < headers.length; i++) {
+            var header = headers[i];
+            var value = document.getElementById(header).value;
+            datas.push(value);
+          }
+          google.script.run.withSuccessHandler(one).updateRowData(datas,rowIndex);
+          //Logger.log("Calling google.script.run.");
+        } catch (error) {
+          console.error('Error in editedForm: ' + error.message);
+          alert('Error submitting form: ' + error.message);
+          Logger.log("Error submitting form: " + error.message);          
+          alert("Error submitting form: " + error.message);
+        }
+      }
+function one() {
+  //Logger.log("Row updated successfully!");
+  google.script.host.close();
+  }
+
+    var formElements = `<form>
+      <label for="filterHeader">Select Filter Header : </label>
+      <select id="filterHeader" name="filterHeader" onchange="updateUniqueKeys()"></select><br><br><br>
+      <label for="uniqueKey">Select Unique Key :  </label>
+      <select id="uniqueKey" name="uniqueKey"></select><br><br><br>
+      <input type="button"  class="subbtn" value="Submit" onclick="searchForm()">
+    </form>  `;
+
+  function PageSearch() {
+    // Set the form elements to the document body
+    document.body.innerHTML = formElements;
+    // Call the function to populate filter headers
+    google.script.run.withSuccessHandler(populateFilterHeaders).getFilterHeaders();
+  }
+
+
+      function populateFilterHeaders(headers) {
+        var dropdown = document.getElementById('filterHeader');
+        for (var i = 0; i < headers.length; i++) {
+          var option = document.createElement('option');
+          option.value = headers[i];
+          option.text = headers[i];
+          dropdown.add(option);
+        }
+      }
+      
+      function updateUniqueKeys() {
+        var filterHeader = document.getElementById('filterHeader').value;
+        google.script.run.withSuccessHandler(populateUniqueKeys).getUniqueKeys(filterHeader);
+      }
+      
+      function populateUniqueKeys(uniqueKeys) {
+        var dropdown = document.getElementById('uniqueKey');
+        dropdown.innerHTML = '';
+        for (var i = 0; i < uniqueKeys.length; i++) {
+          var option = document.createElement('option');
+          option.value = uniqueKeys[i];
+          option.text = uniqueKeys[i];
+          dropdown.add(option);
+        }
+      }
+      
+      function searchForm() {
+        var filterHeader = document.getElementById('filterHeader').value;
+        var uniqueKey = document.getElementById('uniqueKey').value;
+        google.script.run.getData(filterHeader, uniqueKey);
+      }
+
+    </script>
+
+  </body>
+</html>
