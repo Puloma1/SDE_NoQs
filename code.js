@@ -41,6 +41,8 @@ function enterNewEntrydrop() {
       else {
         htmlOutput.append('<input type="text" id="header' + i + '" name="header' + i + '"><br><br>');
       }
+      
+  htmlOutput.append('<br>');
     }
     htmlOutput.append('<input type="button" class="subbtn" value="Submit" onclick="submitForm()"></form>');
 
@@ -112,9 +114,9 @@ else{
 
         {htmlOutput.append('<input type="text" id="' + headers[i] + '" name="' + headers[i] + '" value="' + rowData[i] + '">');
         htmlOutput.append('</div> ');}
+  }    
+  htmlOutput.append('<br>');
   }
-  }
-
 
   htmlOutput.append('<input type="button"  class="subbtn" value="Submit" onclick="editedForm('+rowIndex+')"></form>');
 
